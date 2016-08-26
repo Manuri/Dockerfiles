@@ -26,9 +26,9 @@ mkdir -p /build/software/maven \
 && rm /build/software/maven/apache-maven-3.0.5-bin.tar.gz
 
 RUN \
-wget -P /build/software/maven https://archive.apache.org/dist/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz \
-&& tar -xvzf /build/software/maven/apache-maven-3.3.3-bin.tar.gz --directory /build/software/maven \
-&& rm /build/software/maven/apache-maven-3.3.3-bin.tar.gz
+wget -P /build/software/maven https://archive.apache.org/dist/maven/maven-3/3.2.2/binaries/apache-maven-3.2.2-bin.tar.gz \
+&& tar -xvzf /build/software/maven/apache-maven-3.2.2-bin.tar.gz --directory /build/software/maven \
+&& rm /build/software/maven/apache-maven-3.2.2-bin.tar.gz
 
 RUN \
 wget -P /build/software/maven https://archive.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz \
@@ -36,37 +36,35 @@ wget -P /build/software/maven https://archive.apache.org/dist/maven/maven-3/3.3.
 && rm /build/software/maven/apache-maven-3.3.9-bin.tar.gz
 
 RUN \
-echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections \
-&& add-apt-repository -y ppa:webupd8team/java \
-&& apt-get update \
-&& apt-get install -y oracle-java8-installer \
-&& apt-get clean \
-&& rm -rf /var/lib/apt/lists/* \
-&& rm -rf /var/cache/oracle-jdk8-installer \
+wget -P /build/software/maven https://archive.apache.org/dist/maven/maven-2/2.2.1/binaries/apache-maven-2.2.1-bin.tar.gz \
+&& tar -xvzf /build/software/maven/apache-maven-2.2.1-bin.tar.gz --directory /build/software/maven \
+&& rm /build/software/maven/apache-maven-2.2.1-bin.tar.gz
+
+RUN \
+mkdir -p /build/software/java \
+&& wget -P /build/software/java --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u45-b14/jdk-8u45-linux-x64.tar.gz \
+&& tar -xvzf /build/software/java/jdk-8u45-linux-x64.tar.gz --directory /build/software/java \
+&& rm /build/software/java/jdk-8u45-linux-x64.tar.gz \
 && mkdir -p /build/software/jce \
 && wget -P /build/software/jce --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip \
 && unzip -o /build/software/jce/jce_policy-8.zip -d /build/software/jce \
-&& mv /usr/lib/jvm/java-8-oracle/jre/lib/security/local_policy.jar /usr/lib/jvm/java-8-oracle/jre/lib/security/local_policy-original.jar \
-&& mv /usr/lib/jvm/java-8-oracle/jre/lib/security/US_export_policy.jar /usr/lib/jvm/java-8-oracle/jre/lib/security/US_export_policy-original.jar \
-&& cp /build/software/jce/UnlimitedJCEPolicyJDK8/local_policy.jar /usr/lib/jvm/java-8-oracle/jre/lib/security/ \
-&& cp /build/software/jce/UnlimitedJCEPolicyJDK8/US_export_policy.jar /usr/lib/jvm/java-8-oracle/jre/lib/security/ \
+&& mv /build/software/java/jdk1.8.0_45/jre/lib/security/local_policy.jar /build/software/java/jdk1.8.0_45/jre/lib/security/local_policy-original.jar \
+&& mv /build/software/java/jdk1.8.0_45/jre/lib/security/US_export_policy.jar /build/software/java/jdk1.8.0_45/jre/lib/security/US_export_policy-original.jar \
+&& cp /build/software/jce/UnlimitedJCEPolicyJDK8/local_policy.jar /build/software/java/jdk1.8.0_45/jre/lib/security/ \
+&& cp /build/software/jce/UnlimitedJCEPolicyJDK8/US_export_policy.jar /build/software/java/jdk1.8.0_45/jre/lib/security/ \
 && rm  /build/software/jce/jce_policy-8.zip \
 && rm -r /build/software/jce/UnlimitedJCEPolicyJDK8
 
 RUN \
-echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections \
-&& add-apt-repository -y ppa:webupd8team/java \
-&& apt-get update \
-&& apt-get install -y oracle-java7-installer \
-&& apt-get clean \
-&& rm -rf /var/lib/apt/lists/* \
-&& rm -rf /var/cache/oracle-jdk7-installer \
+wget -P /build/software/java --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u51-b13/jdk-7u51-linux-x64.tar.gz \
+&& tar -xvzf /build/software/java/jdk-7u51-linux-x64.tar.gz --directory /build/software/java \
+&& rm /build/software/java/jdk-7u51-linux-x64.tar.gz \
 && wget -P /build/software/jce --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jce/7/UnlimitedJCEPolicyJDK7.zip \
 && unzip -o /build/software/jce/UnlimitedJCEPolicyJDK7.zip -d /build/software/jce \
-&& mv /usr/lib/jvm/java-7-oracle/jre/lib/security/local_policy.jar /usr/lib/jvm/java-7-oracle/jre/lib/security/local_policy-original.jar \
-&& mv /usr/lib/jvm/java-7-oracle/jre/lib/security/US_export_policy.jar /usr/lib/jvm/java-7-oracle/jre/lib/security/US_export_policy-original.jar \
-&& cp /build/software/jce/UnlimitedJCEPolicy/local_policy.jar /usr/lib/jvm/java-7-oracle/jre/lib/security/ \
-&& cp /build/software/jce/UnlimitedJCEPolicy/US_export_policy.jar /usr/lib/jvm/java-7-oracle/jre/lib/security/ \
+&& mv /build/software/java/jdk1.7.0_51/jre/lib/security/local_policy.jar /build/software/java/jdk1.7.0_51/jre/lib/security/local_policy-original.jar \
+&& mv /build/software/java/jdk1.7.0_51/jre/lib/security/US_export_policy.jar /build/software/java/jdk1.7.0_51/jre/lib/security/US_export_policy-original.jar \
+&& cp /build/software/jce/UnlimitedJCEPolicy/local_policy.jar /build/software/java/jdk1.7.0_51/jre/lib/security/ \
+&& cp /build/software/jce/UnlimitedJCEPolicy/US_export_policy.jar /build/software/java/jdk1.7.0_51/jre/lib/security/ \
 && rm /build/software/jce/UnlimitedJCEPolicyJDK7.zip \
 && rm -r /build/software/jce/UnlimitedJCEPolicy
 
