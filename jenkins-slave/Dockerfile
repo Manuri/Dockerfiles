@@ -77,6 +77,12 @@ add-apt-repository ppa:openjdk-r/ppa -y \
 && apt-get clean \
 && rm -rf /var/lib/apt/lists/*
 
+RUN \
+wget -P /build/software/java --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u31-b04/jdk-6u31-linux-x64.bin \
+&& chmod a+x /build/software/java/jdk-6u31-linux-x64.bin \
+&& (echo "\n" | sh /build/software/java/jdk-6u31-linux-x64.bin) \
+&& rm /build/software/java/jdk-6u31-linux-x64.bin
+
 EXPOSE 22
 
 CMD ["/usr/sbin/sshd", "-D"]
