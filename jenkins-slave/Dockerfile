@@ -84,6 +84,14 @@ wget -P /build/software/java --no-check-certificate --no-cookies --header "Cooki
 && echo "\n" | sh /build/software/java/jdk-6u31-linux-x64.bin \
 && rm /build/software/java/jdk-6u31-linux-x64.bin
 
+RUN \
+echo "net.ipv4.ip_local_port_range=15000 61000" >> /etc/sysctl.conf \
+&& echo "net.ipv4.tcp_fin_timeout=30" >> /etc/sysctl.conf \
+&& echo "*	soft	nofile	65535" >> /etc/security/limits.conf \
+&& echo "*	hard	nofile	65535" >> /etc/security/limits.conf \
+&& echo "*	soft	nproc	65535" >> /etc/security/limits.conf \
+&& echo "*	hard	nproc	65535" >> /etc/security/limits.conf
+
 EXPOSE 22
 
 CMD ["/usr/sbin/sshd", "-D"]
