@@ -90,7 +90,11 @@ echo "net.ipv4.ip_local_port_range=15000 61000" >> /etc/sysctl.conf \
 && echo "*	soft	nofile	65535" >> /etc/security/limits.conf \
 && echo "*	hard	nofile	65535" >> /etc/security/limits.conf \
 && echo "*	soft	nproc	65535" >> /etc/security/limits.conf \
-&& echo "*	hard	nproc	65535" >> /etc/security/limits.conf
+&& echo "*	hard	nproc	65535" >> /etc/security/limits.conf \
+&& echo export TEST_OPTS="test" >> ~/.profile \
+source ~/.profile
+
+COPY somefolder /home/jenkins/somefolder
 
 EXPOSE 22
 
