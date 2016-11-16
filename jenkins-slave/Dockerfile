@@ -90,11 +90,15 @@ echo "net.ipv4.ip_local_port_range=15000 61000" >> /etc/sysctl.conf \
 && echo "*	soft	nofile	65535" >> /etc/security/limits.conf \
 && echo "*	hard	nofile	65535" >> /etc/security/limits.conf \
 && echo "*	soft	nproc	65535" >> /etc/security/limits.conf \
-&& echo "*	hard	nproc	65535" >> /etc/security/limits.conf \
-&& echo export TEST_OPTS="test" >> ~/.profile \
-source ~/.profile
+&& echo "*	hard	nproc	65535" >> /etc/security/limits.conf
 
-COPY somefolder /home/jenkins/somefolder
+ENV SLAVE_HOME=/home/jenkins
+
+COPY .gnupg /home/jenkins/.gnupg
+
+RUN \
+chown -R ${USER}:${USER} /home/jenkins/.gnupg \
+&& chmod -R go-rwx /home/jenkins/.gnupg
 
 EXPOSE 22
 
